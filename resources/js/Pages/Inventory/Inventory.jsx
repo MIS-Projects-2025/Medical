@@ -1,9 +1,13 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { Head } from '@inertiajs/react'
-import { Plus, UploadCloud, RefreshCw, Maximize2, Minimize2 } from 'lucide-react'
+import { Plus, UploadCloud, RefreshCw, Maximize2, Minimize2, Download, ChevronDown, FlaskConical, Package, Wrench, LayoutList } from 'lucide-react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Button }       from '@/components/ui/button'
 import { Pagination }   from '@/Components/Pagination'
+import {
+    DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
+    DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem,
+} from '@/components/ui/dropdown-menu'
 
 import InventoryStats     from './components/InventoryStats'
 import InventoryFilters   from './components/InventoryFilters'
@@ -11,6 +15,7 @@ import InventoryTable     from './components/InventoryTable'
 import InventoryFormSheet from './components/InventoryFormSheet'
 import BulkUploadModal    from './components/BulkUploadModal'
 import BulkActionsBar     from './components/BulkActionsBar'
+import LogsDialog         from './components/LogsDialog'
 
 import { useDebounce }          from './hooks/useDebounce'
 import { useInventoryData, useInventoryStats, useInventoryMutations } from './hooks/useInventory'
@@ -45,6 +50,7 @@ export default function Inventory() {
     const [sheetOpen,  setSheetOpen]  = useState(false)
     const [editItem,   setEditItem]   = useState(null)
     const [uploadOpen, setUploadOpen] = useState(false)
+    const [logsItem,   setLogsItem]   = useState(null)
 
     // ── Fullscreen (native browser API) ──────────────────────────────────────
     const tableRef = useRef(null)
@@ -165,6 +171,20 @@ export default function Inventory() {
         return result
     }
 
+    const handleExport = (overrideMedType = null) => {
+        const params = new URLSearchParams()
+        const f = effectiveFilters
+        if (f.search)       params.set('search',       f.search)
+        // override med_type if a specific type is chosen from the dropdown
+        const medType = overrideMedType ?? f.med_type
+        if (medType)        params.set('med_type',     medType)
+        if (f.stock_status) params.set('stock_status', f.stock_status)
+        if (f.expiry)       params.set('expiry',       f.expiry)
+        if (f.sort_by)      params.set('sort_by',      f.sort_by)
+        if (f.sort_dir)     params.set('sort_dir',     f.sort_dir)
+        window.location.href = route('inventory.export') + (params.toString() ? '?' + params.toString() : '')
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
 
     return (
@@ -202,6 +222,37 @@ export default function Inventory() {
                             <UploadCloud className="h-3.5 w-3.5" />
                             Bulk Upload
                         </Button>
+
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm" className="gap-1.5">
+                                    <Download className="h-3.5 w-3.5" />
+                                    Export
+                                    <ChevronDown className="h-3 w-3 opacity-60" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44">
+                                <DropdownMenuLabel className="text-xs text-muted-foreground">Export as .xlsx</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => handleExport(null)} className="gap-2">
+                                    <LayoutList className="h-3.5 w-3.5 text-muted-foreground" />
+                                    All Items
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => handleExport('1')} className="gap-2">
+                                    <FlaskConical className="h-3.5 w-3.5 text-blue-500" />
+                                    Medicine
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleExport('2')} className="gap-2">
+                                    <Package className="h-3.5 w-3.5 text-emerald-500" />
+                                    Supply
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleExport('3')} className="gap-2">
+                                    <Wrench className="h-3.5 w-3.5 text-orange-500" />
+                                    Equipment
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
 
                         <Button size="sm" onClick={openAdd} className="gap-1.5">
                             <Plus className="h-4 w-4" />
@@ -265,6 +316,7 @@ export default function Inventory() {
                             onEdit={openEdit}
                             onDelete={handleDelete}
                             onUpdate={handleInlineUpdate}
+                            onViewLogs={setLogsItem}
                             saving={saving}
                         />
                     </div>
@@ -305,6 +357,12 @@ export default function Inventory() {
                 onBulkDelete={handleBulkDelete}
                 onClear={() => setSelectedIds(new Set())}
                 disabled={saving}
+            />
+
+            {/* ── Item history dialog ── */}
+            <LogsDialog
+                item={logsItem}
+                onClose={() => setLogsItem(null)}
             />
 
         </AuthenticatedLayout>

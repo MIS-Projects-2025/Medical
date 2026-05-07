@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InventoryExport;
 use App\Services\InventoryService;
+use App\Services\MedicalLogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class InventoryController extends Controller
 {
     public function __construct(
-        private readonly InventoryService $service
+        private readonly InventoryService    $service,
+        private readonly MedicalLogService   $logService,
     ) {}
 
     // ── Page ──────────────────────────────────────────────────────────────────
@@ -89,6 +94,30 @@ class InventoryController extends Controller
 
         $count = $this->service->bulkDelete($request->ids);
         return response()->json(['deleted' => $count, 'message' => "{$count} item(s) deleted."]);
+    }
+
+    /** GET /inventory/export — download full inventory as .xlsx (filters respected) */
+    public function export(Request $request): BinaryFileResponse
+    {
+        $filters = $request->only(['search', 'med_type', 'stock_status', 'expiry', 'sort_by', 'sort_dir']);
+
+        $typeLabel = match ((int) ($filters['med_type'] ?? 0)) {
+            1 => 'medicine',
+            2 => 'supply',
+            3 => 'equipment',
+            default => 'all',
+        };
+
+        $filename = "Medical_inventory_{$typeLabel}_" . now()->format('Ymd') . '.xlsx';
+
+        return Excel::download(new InventoryExport($filters), $filename);
+    }
+
+    /** GET /inventory/{id}/logs — paginated change history for one item */
+    public function logs(Request $request, int $id): JsonResponse
+    {
+        $filters = $request->only('search', 'action_type', 'page', 'per_page');
+        return response()->json($this->logService->getForInventoryItem($id, $filters));
     }
 
     /** POST /inventory/bulk-upload — import from Excel (.xlsx/.xls) or CSV */

@@ -31,6 +31,7 @@ import {
     ShieldCheck,
     FileWarning,
     Pill,
+    BriefcaseMedical,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -164,7 +165,7 @@ export default function Sidebar() {
                             )}
                         >
                             <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-primary shadow-md">
-                                <Pill className="w-4 h-4 text-primary-foreground" />
+                                <BriefcaseMedical className="w-4 h-4 text-primary-foreground" />
                             </div>
 
                             {isSidebarOpen && (

@@ -4,7 +4,8 @@
       "Bash(grep -E \"\\\\.\\(php|jsx\\)$\")",
       "Bash(npm install:*)",
       "Bash(composer require:*)",
-      "Bash(php artisan:*)"
+      "Bash(php artisan:*)",
+      "Bash(find:*)"
     ]
   }
 }

@@ -1,9 +1,10 @@
 import { usePage } from "@inertiajs/react";
 import SidebarLink from "@/Components/sidebar/SidebarLink";
-import { LayoutDashboard, Package } from "lucide-react";
+import { LayoutDashboard, Package, ClipboardList, ScrollText } from "lucide-react";
 
 export default function NavLinks({ isSidebarOpen }) {
     const { emp_data } = usePage().props;
+    const isStation39 = Number(emp_data?.emp_station_id) === 39;
 
     return (
         <nav
@@ -16,10 +17,26 @@ export default function NavLinks({ isSidebarOpen }) {
                 icon={<LayoutDashboard className="w-5 h-5" />}
                 isSidebarOpen={isSidebarOpen}
             />
+            {isStation39 && (
+                <SidebarLink
+                    href={route("inventory.index")}
+                    label="Inventory"
+                    icon={<Package className="w-5 h-5" />}
+                    isSidebarOpen={isSidebarOpen}
+                />
+            )}
+            {isStation39 && (
+                <SidebarLink
+                    href={route("issuance.index")}
+                    label="Issuance"
+                    icon={<ClipboardList className="w-5 h-5" />}
+                    isSidebarOpen={isSidebarOpen}
+                />
+            )}
             <SidebarLink
-                href={route("inventory.index")}
-                label="Inventory"
-                icon={<Package className="w-5 h-5" />}
+                href={route("issuance.records")}
+                label="Issuance Records"
+                icon={<ScrollText className="w-5 h-5" />}
                 isSidebarOpen={isSidebarOpen}
             />
         </nav>

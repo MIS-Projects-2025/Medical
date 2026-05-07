@@ -56,23 +56,25 @@ export function Pagination({
         return (
             <div className="flex items-center justify-between px-1 py-3 border-t text-sm text-muted-foreground">
                 {/* Per-page selector */}
-                <div className="flex items-center gap-2">
-                    <span>Rows per page</span>
-                    <Select
-                        value={String(perPage)}
-                        onValueChange={onPerPageChange}
-                    >
-                        <SelectTrigger className="h-8 w-16">
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {perPageOptions.map((o) => (
-                                <SelectItem key={o} value={String(o)}>
-                                    {o}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                <div className="flex items-center gap-2 shrink-0">
+                    <span className="whitespace-nowrap">Rows per page</span>
+                    <div className="w-16 shrink-0">
+                        <Select
+                            value={String(perPage)}
+                            onValueChange={onPerPageChange}
+                        >
+                            <SelectTrigger className="h-8 w-16">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {perPageOptions.map((o) => (
+                                    <SelectItem key={o} value={String(o)}>
+                                        {o}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
 
                 {/* Counter + nav */}

@@ -19,7 +19,9 @@ Route::prefix($app_name)->middleware(AuthMiddleware::class)->group(function () {
         // JSON API — data, stats, CRUD, bulk ops
         Route::get('/data',         [InventoryController::class, 'data'])->name('data');
         Route::get('/stats',        [InventoryController::class, 'stats'])->name('stats');
+        Route::get('/export',       [InventoryController::class, 'export'])->name('export');
         Route::post('/',            [InventoryController::class, 'store'])->name('store');
+        Route::get('/{id}/logs',    [InventoryController::class, 'logs'])->name('logs');
         Route::put('/{id}',         [InventoryController::class, 'update'])->name('update');
         Route::delete('/bulk',      [InventoryController::class, 'bulkDelete'])->name('bulkDelete');
         Route::delete('/{id}',      [InventoryController::class, 'destroy'])->name('destroy');

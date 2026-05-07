@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { ArrowUp, ArrowDown, ArrowUpDown, Pencil, Trash2, Save, X } from 'lucide-react'
+import { ArrowUp, ArrowDown, ArrowUpDown, Pencil, Trash2, Save, X, History } from 'lucide-react'
 import {
     Table, TableHeader, TableBody,
     TableHead, TableRow, TableCell,
@@ -98,6 +98,7 @@ export default function InventoryTable({
     onEdit,
     onDelete,
     onUpdate,
+    onViewLogs,
     saving,
 }) {
     const [editingId,   setEditingId]   = useState(null)
@@ -183,7 +184,7 @@ export default function InventoryTable({
                         ))}
 
                         {/* Actions */}
-                        <TableHead className="w-28 text-right pr-3 text-xs font-semibold uppercase tracking-wide">
+                        <TableHead className="w-36 text-right pr-3 text-xs font-semibold uppercase tracking-wide">
                             Actions
                         </TableHead>
                     </TableRow>
@@ -294,9 +295,9 @@ export default function InventoryTable({
                                                 />
                                             </div>
                                         ) : (
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-medium tabular-nums">{row.qty}</span>
-                                                <StockBadge qty={row.qty} />
+                                            <div className="flex items-center gap-2 whitespace-nowrap">
+                                                <span className="font-medium tabular-nums w-10 text-right shrink-0">{row.qty}</span>
+                                                <StockBadge qty={row.qty} className="shrink-0" />
                                             </div>
                                         )}
                                     </TableCell>
@@ -349,6 +350,15 @@ export default function InventoryTable({
                                             </div>
                                         ) : (
                                             <div className="flex items-center justify-end gap-1">
+                                                <Button
+                                                    size="icon"
+                                                    variant="ghost"
+                                                    className="h-7 w-7 text-violet-500 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950/30"
+                                                    onClick={() => onViewLogs?.(row)}
+                                                    title="View history"
+                                                >
+                                                    <History className="h-3.5 w-3.5" />
+                                                </Button>
                                                 <Button
                                                     size="icon"
                                                     variant="ghost"
