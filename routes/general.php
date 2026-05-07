@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\General\AdminController;
 use App\Http\Controllers\General\ProfileController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Route;

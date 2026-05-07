@@ -1,6 +1,6 @@
 import { usePage } from "@inertiajs/react";
 import SidebarLink from "@/Components/sidebar/SidebarLink";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, Package } from "lucide-react";
 
 export default function NavLinks({ isSidebarOpen }) {
     const { emp_data } = usePage().props;
@@ -14,6 +14,12 @@ export default function NavLinks({ isSidebarOpen }) {
                 href={route("dashboard")}
                 label="Dashboard"
                 icon={<LayoutDashboard className="w-5 h-5" />}
+                isSidebarOpen={isSidebarOpen}
+            />
+            <SidebarLink
+                href={route("inventory.index")}
+                label="Inventory"
+                icon={<Package className="w-5 h-5" />}
                 isSidebarOpen={isSidebarOpen}
             />
         </nav>
