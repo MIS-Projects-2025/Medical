@@ -5,7 +5,7 @@ import {
     Dialog, DialogContent, DialogHeader,
     DialogTitle, DialogDescription,
 } from '@/components/ui/dialog'
-import { Badge }   from '@/components/ui/badge'
+import { Badge }   from '@/Components/ui/badge'
 import { Input }   from '@/components/ui/input'
 import {
     Select, SelectTrigger, SelectValue,

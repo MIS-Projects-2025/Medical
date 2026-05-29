@@ -6,7 +6,7 @@ import {
     DialogTitle, DialogDescription,
 } from '@/components/ui/dialog'
 import { Input }     from '@/components/ui/input'
-import { Badge }     from '@/components/ui/badge'
+import { Badge }     from '@/Components/ui/badge'
 import { Button }    from '@/components/ui/button'
 import { Skeleton }  from '@/components/ui/skeleton'
 import { Separator } from '@/components/ui/separator'

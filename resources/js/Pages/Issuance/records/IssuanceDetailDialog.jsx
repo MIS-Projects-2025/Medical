@@ -3,7 +3,7 @@ import {
     Dialog, DialogContent, DialogHeader,
     DialogTitle, DialogDescription,
 } from '@/components/ui/dialog'
-import { Badge }     from '@/components/ui/badge'
+import { Badge }     from '@/Components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import {
     Table, TableHeader, TableBody,

@@ -4,7 +4,7 @@ import { Plus, Pencil, Trash2, ToggleLeft, ToggleRight, GripVertical } from 'luc
 import { toast } from 'sonner'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Button }   from '@/components/ui/button'
-import { Badge }    from '@/components/ui/badge'
+import { Badge }    from '@/Components/ui/badge'
 import { Input }    from '@/components/ui/input'
 import { Label }    from '@/components/ui/label'
 import {

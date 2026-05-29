@@ -8,7 +8,7 @@ import {
 import { Button }   from '@/components/ui/button'
 import { Input }    from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Badge }    from '@/components/ui/badge'
+import { Badge }    from '@/Components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
     Select, SelectTrigger, SelectValue,
